@@ -24,8 +24,11 @@ class DeckListView extends React.Component {
       {props.isFetchingDecks
         ? <ActivityIndicator animating={true} size='large' />
       :
-      <FlatList data={props.decks} renderItem={({item})=>(
-        <Text>{item.title}</Text>
+      <FlatList contentContainerStyle={{alignItems: 'center',justifyContent: 'space-around',flex:1}} ItemSeparatorComponent={()=><View style={{height: 1,width: "100%",backgroundColor: "#CED0CE"}} />} data={props.decks} keyExtractor={item=>item.title} renderItem={({item})=>(
+        <View>
+          <Text style={{textAlign:'center',fontWeight:'bold'}}>{item.title}</Text>
+          <Text style={{textAlign:'center'}}>{item.cards.length} cards</Text>
+        </View>
       )}
       />
       }
@@ -37,8 +40,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+
   },
 });
 

@@ -12,18 +12,18 @@ import * as colors from './utils/colors'
 import { MaterialIcons, Ionicons } from '@expo/vector-icons'
 
 const Tabs = TabNavigator({
+  NewDeck : {
+    screen: NewDeck,
+    navigationOptions: {
+      tabBarLabel: 'New Deck',
+      tabBarIcon: <Ionicons name={Platform.OS==='ios'?'ios-add-outline':'md-add'} size={30} color={colors.black} />
+    }
+  },
     Decks:{
       screen: DeckListView,
       navigationOptions: {
         tabBarLabel: 'Decks',
         tabBarIcon: Platform.OS==='ios'?<Ionicons name='ios-list-outline' size={30} color={colors.black} />:<MaterialIcons name='list' size={30} color={colors.black} />
-      }
-    },
-    NewDeck : {
-      screen: NewDeck,
-      navigationOptions: {
-        tabBarLabel: 'New Deck',
-        tabBarIcon: <Ionicons name={Platform.OS==='ios'?'ios-add-outline':'md-add'} size={30} color={colors.black} />
       }
     }
   },
