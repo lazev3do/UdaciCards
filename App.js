@@ -14,6 +14,8 @@ import QuizView from './components/QuizView'
 import * as colors from './utils/colors'
 import { MaterialIcons, Ionicons } from '@expo/vector-icons'
 import {Constants} from 'expo'
+import {setLocalNotification,clearLocalNotification} from './utils/helpers'
+
 
 const Tabs = TabNavigator({
   Decks:{
@@ -98,6 +100,7 @@ export default class App extends React.Component {
 
   componentDidMount = () => {
   //  getDecks().then(decks => this.setState(decks));
+    setLocalNotification();
   }
   render() {
     return (

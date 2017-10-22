@@ -52,7 +52,7 @@ class DeckView extends React.Component {
           <Text style={{fontSize:30,fontWeight:'bold',color:colors.black}}>{deck.title}</Text>
           <Text style={{color:colors.gray}}>{deck.cards.length} cards</Text>
           <TouchableOpacity style={[styles.addBtn,styles.btn]} onPress={this.handleAddCard}>
-              <Text style={{color:colors.black}}>Add Card</Text>
+              <Text style={{color:colors.black}}>Create New Question</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.handleStartQuiz} style={[styles.quizBtn,styles.btn]}>
               <Text style={{color:colors.white}}>Start Quiz</Text>

@@ -6,6 +6,7 @@ addCardToDeck: take in two arguments, title and card, and will add the card to t
 import {AsyncStorage} from 'react-native';
 
 const DECKS_STORAGE_KEY = 'UdaciCards:decks';
+const QUIZ_STORAGE_KEY = 'UdaciCards:quiz';
 
 export const getDeck =(deckKey) => (
   getDecks()
@@ -73,7 +74,7 @@ export const saveResetCardAnswered = (deck) => (
 export const setInitialDecks = () => (
   AsyncStorage.setItem(DECKS_STORAGE_KEY,JSON.stringify(
     Array.apply("", Array(10)).map((elem,index)=>({
-        title: `deck${index}`,
+        title: `Auto deck_${index}`,
         key:`deck${index}`,
         cards: [
           {

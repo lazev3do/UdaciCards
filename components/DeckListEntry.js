@@ -11,7 +11,7 @@ export default class DeckListEntry extends React.Component {
   openDeck = (deck) => {
     const {bounceValue} = this.state;
     Animated.sequence([
-      Animated.timing(bounceValue, { duration: 200, toValue: 1.04,useNativeDriver:true}),
+      Animated.timing(bounceValue, { duration: 200, toValue: 1.5,useNativeDriver:true}),
       Animated.spring(bounceValue, { toValue: 1, friction: 4,useNativeDriver:true})
     ]).start(()=>{
       this.props.navigation.navigate(

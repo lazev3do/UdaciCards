@@ -21,7 +21,9 @@ import React from 'react';
 import { StyleSheet, Text,TouchableOpacity, View,TextInput,Platform,Button,KeyboardAvoidingView,ActivityIndicator } from 'react-native';
 import * as colors from '../utils/colors'
 import {connect} from 'react-redux'
+import {NavigationActions} from 'react-navigation'
 import {markCardAnswered,resetCardAnswered} from '../actions'
+import {setLocalNotification,clearLocalNotification} from '../utils/helpers'
 
 class QuizView extends React.Component {
 
@@ -54,6 +56,17 @@ class QuizView extends React.Component {
     );
   }
 
+  goBackToDeck = () => {
+    const resetAction = NavigationActions.reset({
+    index: 1,
+    actions: [
+      NavigationActions.navigate({ routeName: 'Home'}),
+      NavigationActions.navigate({ routeName: 'DeckView',params:this.props.presentDeck}),
+      ]
+    })
+    this.props.navigation.dispatch(resetAction);
+  }
+
   restartQuiz = () => {
     this.props.dispatch(resetCardAnswered(this.props.presentDeck));
     this.setState({waitingForDeckFetched:true});
@@ -63,9 +76,15 @@ class QuizView extends React.Component {
     if(this.props.isFetchingDeck===true && nextProps.isFetchingDeck===false && this.state.waitingForDeckFetched)
     {
       this.setState({waitingForDeckFetched:false});
-      this.props.navigation.navigate(
-        'QuizView',{cardIndex:0}
-      );
+      const resetAction = NavigationActions.reset({
+      index: 2,
+      actions: [
+        NavigationActions.navigate({ routeName: 'Home'}),
+        NavigationActions.navigate({ routeName: 'DeckView',params:this.props.presentDeck}),
+        NavigationActions.navigate({ routeName: 'QuizView',params:{cardIndex:0}}),
+        ]
+      })
+      this.props.navigation.dispatch(resetAction);
     }
   }
 
@@ -76,6 +95,7 @@ class QuizView extends React.Component {
 
     if(cardIndex>0 && cardIndex>=presentDeck.cards.length)
     {
+      clearLocalNotification().then(setLocalNotification(true));
       return(
         <View style={styles.container}>
           <Text style={{fontSize:30,fontWeight:'bold'}}>Score: {presentDeck.cards.reduce((accumulator,currentValue)=>(
@@ -88,7 +108,7 @@ class QuizView extends React.Component {
               <Text style={{color:colors.white}}>Restart Quiz</Text>
             </TouchableOpacity>
             }
-            <TouchableOpacity onPress={()=>{this.props.navigation.navigate('DeckView',presentDeck)}} style={[styles.btn,{backgroundColor:colors.gray}]}>
+            <TouchableOpacity onPress={this.goBackToDeck} style={[styles.btn,{backgroundColor:colors.gray}]}>
               <Text style={{color:colors.white}}>Back to Deck</Text>
             </TouchableOpacity>
           </View>
@@ -110,7 +130,7 @@ class QuizView extends React.Component {
             :<Text style={{fontSize:25,fontWeight:'bold'}}>{presentDeck.cards[cardIndex].question}</Text>
             }
             <TouchableOpacity onPress={this.handleShowAnserQuestion}>
-              <Text style={{color:colors.red,fontSize:15}}>{seeAnswer?'Question':'Answer'}</Text>
+              <Text style={{color:colors.red,fontSize:15}}>{seeAnswer?'Show Question':'Show Answer'}</Text>
             </TouchableOpacity>
             {
               presentDeck.cards[cardIndex].correctOrIncorrect
