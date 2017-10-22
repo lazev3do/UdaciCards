@@ -7,8 +7,10 @@ onclick TouchableOpacity call navigation.navigate and sends deck key. StackNavig
 **/
 import React from 'react';
 import {connect} from 'react-redux';
-import { StyleSheet, Text, View, ActivityIndicator, FlatList  } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, FlatList,StackNavigator,TouchableHighlight,TouchableOpacity,Animated   } from 'react-native';
 import {fetchDecks} from '../actions'
+import * as colors from '../utils/colors'
+import DeckListEntry from './DeckListEntry'
 
 class DeckListView extends React.Component {
 
@@ -18,18 +20,14 @@ class DeckListView extends React.Component {
 
   render = () => {
     const props = this.props;
-    console.debug(props);
     return (
     <View style={styles.container}>
       {props.isFetchingDecks
         ? <ActivityIndicator animating={true} size='large' />
       :
-      <FlatList contentContainerStyle={{alignItems: 'center',justifyContent: 'space-around',flex:1}} ItemSeparatorComponent={()=><View style={{height: 1,width: "100%",backgroundColor: "#CED0CE"}} />} data={props.decks} keyExtractor={item=>item.title} renderItem={({item})=>(
-        <View>
-          <Text style={{textAlign:'center',fontWeight:'bold'}}>{item.title}</Text>
-          <Text style={{textAlign:'center'}}>{item.cards.length} cards</Text>
-        </View>
-      )}
+      <FlatList contentContainerStyle={{borderBottomWidth: 0,alignItems: 'stretch',justifyContent: 'space-around'}} ItemSeparatorComponent={()=><View style={{marginLeft: "14%",height: 2,width: "100%",backgroundColor: colors.black}} />} data={props.decks} keyExtractor={item=>item.key} renderItem={({item})=>(
+          <DeckListEntry {...props} item={item} />
+        )}
       />
       }
     </View>

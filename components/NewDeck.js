@@ -2,30 +2,58 @@
 An option to submit the new deck title**/
 
 import React from 'react';
-import { StyleSheet, Text, View,TextInput,Platform,TouchableOpacity,Button } from 'react-native';
+import {connect} from 'react-redux';
+import { StyleSheet, Text, View,TextInput,Platform,Button,KeyboardAvoidingView,ActivityIndicator,Alert } from 'react-native';
 import * as colors from '../utils/colors'
+import {saveDeckTitle} from '../utils/api'
+import {fetchDecks} from '../actions'
 
-export default class NewDeck extends React.Component {
+class NewDeck extends React.Component {
   state = {
-    deckTitle: ''
+    deckTitle: '',
+    isAddingDeck:false
   }
 
   handleTextChange = (deckTitle) => {
-    this.setState(()=>({
+    this.setState({
       deckTitle
-    }))
-  }
+    })
+  };
 
+  submitNewDeck = (name) => {
+    if(name)
+    {
+      this.setState({
+        isAddingDeck:true
+      });
+      saveDeckTitle(name).then((deck)=>{
+        this.setState({
+          isAddingDeck:false,
+          deckTitle:''
+        });
+        this.props.dispatch(fetchDecks());
+        this.props.navigation.navigate('DeckView',deck);
+      })
+    }
+    else {
+      Alert.alert('Required deck title');
+    }
+  }
   render = () => (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} behavior='padding'>
       <Text style={{fontSize:20,fontWeight:'bold'}}>What is the title of your new Deck?</Text>
       <TextInput style={styles.input} value={this.state.deckTitle} onChangeText={this.handleTextChange} />
-        <Button title='Submit'
-          style={styles.submitBtn}>
-        </Button>
-    </View>
+        {this.state.isAddingDeck
+        ?<ActivityIndicator animating={true} size='large' />
+      :<Button title='Create Deck' onPress={()=>{this.submitNewDeck(this.state.deckTitle)}}
+            style={styles.submitBtn}>
+          </Button>
+      }
+    </KeyboardAvoidingView>
   )
 }
+
+export default connect()(NewDeck);
 
 const styles = StyleSheet.create({
   container: {
@@ -37,9 +65,10 @@ const styles = StyleSheet.create({
   input: {
     padding:8,
     height:44,
-    borderWidth:1,
     margin:20,
-    width:'80%'
+    width:'80%',
+    borderWidth:1,
+    borderColor:colors.black
   },
   submitBtn: {
     backgroundColor: colors.black,
