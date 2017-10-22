@@ -4,6 +4,9 @@ import {AsyncStorage} from 'react-native'
 
 const NOTIFICATION_KEY = 'UdaciCards:notifications'
 
+/**
+based on the lesson code
+**/
 
 export function clearLocalNotification () {
   return AsyncStorage.removeItem(NOTIFICATION_KEY)

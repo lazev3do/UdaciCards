@@ -136,7 +136,7 @@ class QuizView extends React.Component {
               presentDeck.cards[cardIndex].correctOrIncorrect
               ?
                 <View>
-                  <Text>This question has been already answered and is {presentDeck.cards[cardIndex].correctOrIncorrect}</Text>
+                  <Text>This question has already been answered and is {presentDeck.cards[cardIndex].correctOrIncorrect}</Text>
                   <TouchableOpacity style={[styles.btn,{backgroundColor:colors.gray}]} onPress={()=>{this.goToNext(cardIndex)}}>
                     <Text style={{color:colors.white}}>Next</Text>
                   </TouchableOpacity>
